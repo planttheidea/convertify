@@ -154,7 +154,7 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
 * if the object passed is a `String`, then several things can happen:
   * if it is a numeric string, it returns the parsed value
     * `to.number('123') => 123`
-  * if it is an empty string, it returns `9`
+  * if it is an empty string, it returns `0`
   * if it is a string of words representing numbers, the numeric value described is returned
     * `to.number('three hundred twenty four') => 324`
     * `to.number('ten billion six hundred forty three thousand eight hundred and four') => 10000643804`
