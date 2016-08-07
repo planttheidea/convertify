@@ -2,7 +2,15 @@
 
 Below is the details regarding what kind of objects to expect when making conversions.
 
-**Note**
+**Table of Contents**
+
+* [Note](#note)
+* [to.array](#toarray)
+* [to.boolean](#toboolean)
+* [to.date](#todate)
+* [to.error](#toerror)
+
+#### Note
 
 if the object passed is the same object class as is attempting to convert to, the original object itself is returned
 
@@ -13,7 +21,7 @@ const convertedObject = to.object(object);
 console.assert(object === convertedObject); // true
 ```
 
-**toArray**
+#### to.array
 
 * if the object is a standard `Object`, or ES2015 `Map` / `Set`, an array of the values from the `key: value` pairs are returned
   * `to.array({foo: 'bar'}) => ['bar']`
@@ -24,7 +32,7 @@ console.assert(object === convertedObject); // true
 * in all other cases, the object is wrapped in an array
   * `to.array('foo') => ['foo']`
 
-**toBoolean**
+#### toBoolean
 
 * if the object is an `Array`, it returns based on the array having length
   * `to.boolean(['foo']) => true`
@@ -41,7 +49,7 @@ console.assert(object === convertedObject); // true
   * `to.boolean('foo') => true`
   * `to.boolean('') => false`
 
-**toDate**
+#### toDate
 
 * if the object is an `Array` or `Set`, it applies the values as arguments to the `Date` constructor
   * `to.date([2000, 0, 1]) => Sat Jan 01 2000 00:00:00 GMT-0500 (EST)`
@@ -61,7 +69,7 @@ console.assert(object === convertedObject); // true
 * If the object is `null`, `undefined`, or an empty `String`, a new date (as if no parameters were passed to the constructor) is returned
 * in all other cases, the object is passed to the `Date` constructor directly
 
-**toError**
+#### toError
 
 * in all cases, the object is stringified via the library's `toString` and that is applied as the message
 
