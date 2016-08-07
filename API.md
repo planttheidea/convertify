@@ -203,10 +203,52 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
 #### to.string
 (*toString* when imported alone)
 
+* if the object is an `Arguments`, `Array`, `Object`, `Number`, or `String`, then `JSON.stringify` is applied directly
+ * `to.string(['foo', 'bar']) => '["foo","bar"]'`
+ * `to.string({foo: 'bar'}) => '{"foo":"bar"}'`
+ * `to.string(1) => '1'`
+ * `to.string('foo') => 'foo'`
+* if the object is an `Error` or `RegExp`, or is `null` or `undefined`, implict string conversion is used
+ * `to.string(new Error('foo')) => 'Error: foo'`
+ * `to.string(/foo/) => '/foo/'`
+ * `to.string(null) => 'null'`
+ * `to.string(undefined) => 'undefined'`
+* if the object is a `Date`, then the `toISOString` method is used
+ * `to.string(new Date(2000, 0, 1)) => 'Sat Jan 01 2000 00:00:00 GMT-0500 (EST)'`
+* if the object is a `Function`, `GeneratorFunction`, or `Symbol`, the native `toString` method is used
+ * `to.string(function foo() {}) => 'function foo() {}'`
+ * `to.string(Symbol('foo')) => 'Symbol(foo)'`
+* if the object is a `Promise`, `WeakMap`, or `WeakSet`, the object class is returned
+ * this is because the values of these objects are impossible to see and therefore uniquely stringify
+ * `to.string(Promise.resolve(1)) => 'Promise'`
+ * `to.string(new WeakMap()) => 'WeakMap'`
+ * `to.string(new WeakSet()) => 'WeakSet'`
+* if the object is a `Map`, an object of `key: value` pairs is stringified as `JSON`
+ * `to.string(new Map().set({foo: 'bar'}, 'baz')) => '{{"foo":"bar"}:"baz}'`
+* if the object is a `Set`, an array of values is stringified as `JSON`
+ * `to.string(new Set().add('foo').add('bar')) => '["foo","bar"]'`
+* if the object is an `ArrayBuffer`, a `Uint16Array` is created from the buffer and converted to charCodes
+ * `to.string(new Uint16Array([1,2,3]).buffer) => '\\u0001\\u0002\\u0003'`
+* if the object is a `DataView`, the buffer from it is applied with the same technique as `ArrayBuffer`
+* if the object is a TypedArray (`Float32Array`, `Int16Array`, `Uint8Array`, etc), the native `join` method is used
+ * `to.string(new Uint8Array([1,2,3])) => '[1,2,3]'`
+* if the object is the `Math` object, an object of `key: value` pairs for its constants is used
+ * `to.string(Math) => '{"E":2.718281828459045,"LN2":0.6931471805599453,"LN10":2.302585092994046,"LOG2E":1.4426950408889634,"LOG10E":0.4342944819032518,"PI":3.141592653589793,"SQRT1_2":0.7071067811865476,"SQRT2":1.4142135623730951}'`
+* if the object is an `HTMLElement` (or a subset, such as `HTMLDivElement`), then is `textContent is used
+
+```javascript
+const div = document.createElement('div');
+
+div.innerHTML = '<span>Hello</span>';
+
+console.log(to.string(div)); // Hello
+```
+* in all other cases, the object is stringified as `JSON`
+
 #### to.symbol
 (*toSymbol* when imported alone)
 
-* If the object is a string, it is applied to the symbol directly
+* if the object is a string, it is applied to the symbol directly
  * `to.symbol('foo') => Symbol(foo)`
 * in all other cases, the object is stringified using the library's `toString` method and applied to the symbol
  * `to.symbol(['foo', 'bar']) => Symbol(["foo","bar"])`
