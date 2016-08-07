@@ -9,6 +9,18 @@ Below is the details regarding what kind of objects to expect when making conver
 * [to.boolean](#toboolean)
 * [to.date](#todate)
 * [to.error](#toerror)
+* [to.function](#tofunction)
+* [to.generator](#togenerator)
+* [to.map](#tomap)
+* [to.null](#tonull)
+* [to.number](#tonumber)
+* [to.object](#toobject)
+* [to.promise](#topromise)
+* [to.regexp](#toregexp)
+* [to.set](#toset)
+* [to.string](#tostring)
+* [to.symbol](#tosymbol)
+* [to.undefined](#toundefined)
 
 #### Note
 
@@ -22,6 +34,7 @@ console.assert(object === convertedObject); // true
 ```
 
 #### to.array
+(*toArray* when imported alone)
 
 * if the object is a standard `Object`, or ES2015 `Map` / `Set`, an array of the values from the `key: value` pairs are returned
   * `to.array({foo: 'bar'}) => ['bar']`
@@ -32,7 +45,8 @@ console.assert(object === convertedObject); // true
 * in all other cases, the object is wrapped in an array
   * `to.array('foo') => ['foo']`
 
-#### toBoolean
+#### to.boolean
+(*toBoolean* when imported alone)
 
 * if the object is an `Array`, it returns based on the array having length
   * `to.boolean(['foo']) => true`
@@ -49,7 +63,8 @@ console.assert(object === convertedObject); // true
   * `to.boolean('foo') => true`
   * `to.boolean('') => false`
 
-#### toDate
+#### to.date
+(*toDate* when imported alone)
 
 * if the object is an `Array` or `Set`, it applies the values as arguments to the `Date` constructor
   * `to.date([2000, 0, 1]) => Sat Jan 01 2000 00:00:00 GMT-0500 (EST)`
@@ -69,15 +84,18 @@ console.assert(object === convertedObject); // true
 * If the object is `null`, `undefined`, or an empty `String`, a new date (as if no parameters were passed to the constructor) is returned
 * in all other cases, the object is passed to the `Date` constructor directly
 
-#### toError
+#### to.error
+(*toError* when imported alone)
 
 * in all cases, the object is stringified via the library's `toString` and that is applied as the message
 
-**toFunction**
+#### to.function
+(*toFunction* when imported alone)
 
 * in all cases, the object passed is wrapped in an anonymous function
 
-**toGenerator**
+#### to.generator
+(*toGenerator* when imported alone)
 
 * if the object is an `Array` or `Set`, an anonymous generator that will yield each value in the array is returned
 * if the object is an `Object` or `Map`, an anonymous generator that will yield each value from the `key: value` pairs is returned
@@ -101,7 +119,8 @@ const stringGenerator = to.generator(string);
 console.log(stringGenerator.next()); // {value: 'foo', done: true}
 ```
 
-**toMap**
+#### to.map
+(*toMap* when imported alone)
 
 * if the object is an `Array` or `Set`, the indices of the values are used when creating the `key => value` pairs
   * `to.map(['foo', 'bar']) => {0 => 'foo', 1 => 'bar'}`
@@ -111,11 +130,13 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
 * in all other cases, the object is given as the value for the key `0`
   * `to.map('foo') => {0 => 'foo'}`
 
-**toNull**
+#### to.null
+(*toNull* when imported alone)
 
 * in all cases, the value returned is `null`
 
-**toNumber**
+#### to.number
+(*toNumber* when imported alone)
 
 * if the object passed is a `Boolean`, the binary values are returned
   * `to.number(true) => 1`
@@ -139,7 +160,8 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
     * `to.number('ten billion six hundred forty three thousand eight hundred and four') => 10000643804`
 * in all other cases, `NaN` is returned
 
-**toObject**
+#### to.object
+(*toObject* when imported alone)
 
 * if the object is an `Array` or `Set`, indices are used as keys in the `key: value` pairs
   * `to.object(['foo', 'bar']) => {'0': 'foo', '1': 'bar'}`
@@ -151,11 +173,13 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
 * in all other cases, the object is used as a value for key `0`
   * `to.object('foo') => {'0': 'foo'}`
 
-**toPromise**
+#### to.promise
+(*toPromise* when imported alone)
 
 * in all cases, the object is wrapped in `Promise.resolve()`
 
-**toRegExp**
+#### to.regexp
+(*toRegExp* when imported alone)
 
 * if the object is a `String` then one of two things happens:
   * if the string is in the format of a RegExp (starts and ends with `/`) then the leading / trailing slashes are stripped and the value is used
@@ -165,5 +189,29 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
 * in all other cases, the object is stringified via the library's `toString` and used directly
   * `to.regexp({foo: 'bar'}) => /{"foo":"bar"}/`
 
-**toSet**
+#### to.set
+(*toSet* when imported alone)
 
+* if the object is an `Array`, then the values are applied directly to the constructor
+ * `to.set(['foo', 'bar']) => {'foo', 'bar'}
+* if the object is an `Object` or `Map`, then the values from the `key: value` pairs are used
+ * `to.set({foo: 'bar'}) => {'bar'}`
+ * `to.set(new Map().set('foo', 'bar')) => {'bar}`
+* in all other cases, the object is saved as the first value in the set
+ * `to.set('foo') => {'foo'}`
+
+#### to.string
+(*toString* when imported alone)
+
+#### to.symbol
+(*toSymbol* when imported alone)
+
+* If the object is a string, it is applied to the symbol directly
+ * `to.symbol('foo') => Symbol(foo)`
+* in all other cases, the object is stringified using the library's `toString` method and applied to the symbol
+ * `to.symbol(['foo', 'bar']) => Symbol(["foo","bar"])`
+
+#### to.undefined
+(*toUndefined* when imported alone)
+
+* in all cases, the value returned is `undefined`
