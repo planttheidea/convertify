@@ -142,7 +142,7 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
   * `to.number(true) => 1`
   * `to.number(false) => 0`
 * if the object passed is a `Date`, the `valueOf` is returned
-  * `to.number(new Date([2000, 0, 1])) => 946702800000`
+  * `to.number(new Date(2000, 0, 1)) => 946702800000`
 * if the object passed is `null` or `undefined`, `0` is returned
 * if the object passed is an `Array`, the length is returned
   * `to.number(['foo', 'bar']) => 2`
