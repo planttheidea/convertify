@@ -86,3 +86,16 @@ const alsoStringifiedObject = to.string(object);
 ```
 
 The conversions themselves try to be smarter than the standard implicit conversions, so check out the API to learn more details about specific conversion results.
+
+### Development
+
+Standard stuff, clone the repo and `npm i` to get the dependencies. npm scripts available:
+* `build` => builds the distributed JS with `NODE_ENV=development` and with sourcemaps
+* `build-minified` => builds the distributed JS with `NODE_ENV=production` and minified
+* `compile-for-publish` => runs the `lint`, `test`, `transpile`, `build`, and `build-minified` scripts
+* `dev` => runs the webpack dev server for the playground
+* `lint` => runs ESLint against files in the `src` folder
+* `prepublish` => if in publish, runs `compile-for-publish`
+* `test` => run ava with NODE_ENV=test
+* `test:watch` => runs `test` but with persistent watcher
+* `transpile` => runs Babel against files in `src` to files in `lib`
