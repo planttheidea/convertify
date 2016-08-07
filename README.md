@@ -53,6 +53,8 @@ const array = to.array(map); // ['bar']
 
 #### API
 
+Link here: [API](API.md)
+
 **to(convertTo: string, object: any)**
 
 The standard method accepts two parameters, the first being a string of the object class you wnat to convert the object to, and the second being the object itself. The valid object classes you can convert to:
@@ -83,4 +85,4 @@ const stringifiedObject = to('string', object);
 const alsoStringifiedObject = to.string(object);
 ```
 
-The conversions themselves try to be smarter than the standard implicit conversions, so check out the [API](API.md) to learn more details about specific conversion results.
+The conversions themselves try to be smarter than the standard implicit conversions, so check out the API to learn more details about specific conversion results.
