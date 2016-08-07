@@ -70,6 +70,11 @@ test('if passing mapped values yield the original object wrapped in an array', (
     index++;
   });
 
+  const objectKeyMap = new Map().set({foo: 'bar'}, 'baz');
+  const stringifiedKeyObject = {
+    '{"foo":"bar"}': 'baz'
+  };
+
   t.deepEqual(toObject(ARRAY), arrayToObject);
   t.deepEqual(toObject(EMPTY_ARRAY), {});
   t.deepEqual(toObject(EMPTY_MAP), {});
@@ -77,5 +82,6 @@ test('if passing mapped values yield the original object wrapped in an array', (
   t.deepEqual(toObject(MAP), mapToObject);
   t.deepEqual(toObject(SET), setToObject);
 
+  t.deepEqual(toObject(objectKeyMap), stringifiedKeyObject);
   t.deepEqual(toObject(JSON.stringify(OBJECT)), OBJECT);
 });

@@ -5,6 +5,9 @@ import {
 } from './utils/miscellaneous';
 import getObjectClass from './utils/objectClass';
 
+// transform
+import toString from './toString';
+
 // constants
 import {
   ARRAY,
@@ -53,7 +56,7 @@ const toObject = (object) => {
 
     case MAP:
       object.forEach((value, key) => {
-        newObject[key] = value;
+        newObject[getObjectClass(key) === STRING ? key : toString(key)] = value;
       });
 
       return newObject;

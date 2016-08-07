@@ -781,17 +781,6 @@ var convertify =
 	};
 	
 	/**
-	 * prepend type to string value
-	 *
-	 * @param {string} string
-	 * @param {string} type
-	 * @returns {string}
-	 */
-	var prependTypeToString = function prependTypeToString(string, type) {
-	  return type + ' ' + string;
-	};
-	
-	/**
 	 * get the string value for the object used for stringification
 	 *
 	 * @param {any} object
@@ -836,7 +825,7 @@ var convertify =
 	      case _objectClass4.default.WEAKMAP:
 	      case _objectClass4.default.WEAKSET:
 	        return {
-	          v: prependTypeToString('NOT_ENUMERABLE', type)
+	          v: type
 	        };
 	
 	      case _objectClass4.default.MAP:
@@ -897,7 +886,7 @@ var convertify =
 	
 	      default:
 	        return {
-	          v: HTML_ELEMENT_REGEXP.test(objectClass) ? 'HTMLElement ' + object.textContent : object
+	          v: HTML_ELEMENT_REGEXP.test(objectClass) ? object.textContent : object
 	        };
 	    }
 	  }();
@@ -1860,6 +1849,9 @@ var convertify =
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; // utils
 	
 	
+	// transform
+	
+	
 	// constants
 	
 	
@@ -1868,6 +1860,10 @@ var convertify =
 	var _objectClass = __webpack_require__(4);
 	
 	var _objectClass2 = _interopRequireDefault(_objectClass);
+	
+	var _toString = __webpack_require__(9);
+	
+	var _toString2 = _interopRequireDefault(_toString);
 	
 	var _objectClass3 = __webpack_require__(5);
 	
@@ -1915,7 +1911,7 @@ var convertify =
 	
 	      case _objectClass3.MAP:
 	        object.forEach(function (value, key) {
-	          newObject[key] = value;
+	          newObject[(0, _objectClass2.default)(key) === _objectClass3.STRING ? key : (0, _toString2.default)(key)] = value;
 	        });
 	
 	        return {

@@ -137,8 +137,8 @@ const TEST_VALUES = [
     value: {foo: 'bar'}
   }, {
     comparator: 'is',
-    expectedResult: 'Promise NOT_ENUMERABLE',
-    expectedString: 'Promise NOT_ENUMERABLE',
+    expectedResult: 'Promise',
+    expectedString: 'Promise',
     key: 'promise',
     value: Promise.resolve(1)
   }, {
@@ -197,14 +197,14 @@ const TEST_VALUES = [
     value: undefined
   }, {
     comparator: 'is',
-    expectedResult: 'WeakMap NOT_ENUMERABLE',
-    expectedString: 'WeakMap NOT_ENUMERABLE',
+    expectedResult: 'WeakMap',
+    expectedString: 'WeakMap',
     key: 'weakMap',
     value: new WeakMap().set({}, 'foo')
   }, {
     comparator: 'is',
-    expectedResult: 'WeakSet NOT_ENUMERABLE',
-    expectedString: 'WeakSet NOT_ENUMERABLE',
+    expectedResult: 'WeakSet',
+    expectedString: 'WeakSet',
     key: 'weakSet',
     value: new WeakSet().add({})
   }

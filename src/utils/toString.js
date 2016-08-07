@@ -42,17 +42,6 @@ const getObjectType = (type) => {
 };
 
 /**
- * prepend type to string value
- *
- * @param {string} string
- * @param {string} type
- * @returns {string}
- */
-const prependTypeToString = (string, type) => {
-  return `${type} ${string}`;
-};
-
-/**
  * get the string value for the object used for stringification
  *
  * @param {any} object
@@ -87,7 +76,7 @@ const getValueForStringification = (object) => {
     case TYPES.PROMISE:
     case TYPES.WEAKMAP:
     case TYPES.WEAKSET:
-      return prependTypeToString('NOT_ENUMERABLE', type);
+      return type;
 
     case TYPES.MAP:
       let newObject = {};
@@ -134,7 +123,7 @@ const getValueForStringification = (object) => {
       return mathObject;
 
     default:
-      return HTML_ELEMENT_REGEXP.test(objectClass) ? `HTMLElement ${object.textContent}` : object;
+      return HTML_ELEMENT_REGEXP.test(objectClass) ? object.textContent : object;
   }
 };
 
