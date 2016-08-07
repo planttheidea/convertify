@@ -1,4 +1,4 @@
-# converity API
+# convertify API
 
 Below is the details regarding what kind of objects to expect when making conversions.
 
