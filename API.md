@@ -196,7 +196,7 @@ console.log(stringGenerator.next()); // {value: 'foo', done: true}
  * `to.set(['foo', 'bar']) => {'foo', 'bar'}`
 * if the object is an `Object` or `Map`, then the values from the `key: value` pairs are used
  * `to.set({foo: 'bar'}) => {'bar'}`
- * `to.set(new Map().set('foo', 'bar')) => {'bar}`
+ * `to.set(new Map().set('foo', 'bar')) => {'bar'}`
 * in all other cases, the object is saved as the first value in the set
  * `to.set('foo') => {'foo'}`
 
