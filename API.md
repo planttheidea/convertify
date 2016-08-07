@@ -80,7 +80,7 @@ console.assert(object === convertedObject); // true
     * minutes
     * seconds
     * milliseconds
-* if the object is a `Boolean` or `Symbol`,an `Invalid Date` is returned
+* if the object is a `Boolean` or `Symbol`, an `Invalid Date` is returned
 * If the object is `null`, `undefined`, or an empty `String`, a new date (as if no parameters were passed to the constructor) is returned
 * in all other cases, the object is passed to the `Date` constructor directly
 
