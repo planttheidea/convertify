@@ -71,6 +71,10 @@ test('if passing mapped values yield the correct result', (t) => {
     index++;
   });
 
+  const objectWithStringifiedKey = {
+    [JSON.stringify({foo: 'bar'})]: 'baz'
+  };
+
   testIfMapIsEqual(t, toMap(ARRAY), new Map(mappedArray));
   testIfMapIsEqual(t, toMap(EMPTY_ARRAY), new Map());
   testIfMapIsEqual(t, toMap(EMPTY_OBJECT), new Map());
@@ -78,4 +82,5 @@ test('if passing mapped values yield the correct result', (t) => {
   testIfMapIsEqual(t, toMap(EMPTY_SET), new Map());
   testIfMapIsEqual(t, toMap(OBJECT), new Map(objectToMap));
   testIfMapIsEqual(t, toMap(SET), new Map(setToMap));
+  testIfMapIsEqual(t, toMap(objectWithStringifiedKey), new Map().set({foo: 'bar'}, 'baz'));
 });

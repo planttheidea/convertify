@@ -1435,7 +1435,15 @@ var convertify =
 	
 	      case _objectClass3.OBJECT:
 	        for (var key in object) {
-	          keyValuePairs.push([key, object[key]]);
+	          var mapKey = void 0;
+	
+	          try {
+	            mapKey = JSON.parse(key);
+	          } catch (exception) {
+	            mapKey = key;
+	          }
+	
+	          keyValuePairs.push([mapKey, object[key]]);
 	        }
 	
 	        return {

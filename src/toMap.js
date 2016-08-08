@@ -43,7 +43,15 @@ const toMap = (object) => {
 
     case OBJECT:
       for (let key in object) {
-        keyValuePairs.push([key, object[key]]);
+        let mapKey;
+
+        try {
+          mapKey = JSON.parse(key);
+        } catch (exception) {
+          mapKey = key;
+        }
+
+        keyValuePairs.push([mapKey, object[key]]);
       }
 
       return new Map(keyValuePairs);
