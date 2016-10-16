@@ -33,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/planttheidea/convertify/issues"
   },
-  "description": "A ridiculously tiny pubsub manager with no dependencies",
+  "description": "A simple convesion tool from one object type to the next",
   "devDependencies": {
     "ava": "^0.16.0",
     "babel": "6.5.2",
@@ -86,5 +86,5 @@
     "test:watch": "NODE_ENV=test ava --verbose --no-cache --watch",
     "transpile": "./node_modules/babel-cli/lib/babel/index.js -d lib/ src/"
   },
-  "version": "1.0.2"
+  "version": "1.0.3"
 }
