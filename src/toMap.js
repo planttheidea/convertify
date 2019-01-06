@@ -1,17 +1,17 @@
-// utils
-import {
-  forEach,
-  throwUnsupportedError
-} from './utils/miscellaneous';
-import getObjectClass from './utils/objectClass';
-
 // constants
 import {
   ARRAY,
   MAP,
   OBJECT,
-  SET
-} from './constants/objectClass';
+  SET,
+} from './_internals/objectClass';
+
+// utils
+import {
+  getObjectClass,
+  parse,
+  throwUnsupportedError,
+} from './_internals/utils';
 
 /**
  * convert object to a map with different mappings
@@ -31,49 +31,47 @@ const toMap = (object) => {
     return object;
   }
 
-  let keyValuePairs = [];
+  if (objectClass === ARRAY) {
+    return object.reduce((map, value, index) => {
+      map.set(index, value);
 
-  switch (objectClass) {
-    case ARRAY:
-      forEach(object, (value, index) => {
-        keyValuePairs.push([index, value]);
-      });
-
-      return new Map(keyValuePairs);
-
-    case OBJECT:
-      for (let key in object) {
-        let mapKey;
-
-        try {
-          mapKey = JSON.parse(key);
-        } catch (exception) {
-          mapKey = key;
-        }
-
-        keyValuePairs.push([mapKey, object[key]]);
-      }
-
-      return new Map(keyValuePairs);
-
-    case SET:
-      if (typeof Set === 'undefined') {
-        throwUnsupportedError('Set');
-      }
-
-      let index = 0;
-
-      object.forEach((value) => {
-        keyValuePairs.push([index, value]);
-
-        index++;
-      });
-
-      return new Map(keyValuePairs);
-
-    default:
-      return new Map([[0, object]]);
+      return map;
+    }, new Map());
   }
+
+  if (objectClass === OBJECT) {
+    const map = new Map();
+
+    let mapKey;
+
+    for (let key in object) {
+      mapKey = parse(key, () => key);
+
+      map.set(mapKey, object[key]);
+    }
+
+    return map;
+  }
+
+  if (objectClass === SET) {
+    if (typeof Set === 'undefined') {
+      throwUnsupportedError('Set');
+    }
+
+    const map = new Map();
+
+    let index = 0;
+
+    object.forEach((value) => map.set(index++, value));
+
+    return map;
+  }
+
+  const map = new Map();
+
+  map.set(0, object);
+
+  return map;
 };
 
 export default toMap;

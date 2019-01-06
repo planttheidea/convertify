@@ -1,10 +1,8 @@
-// utils
-import getObjectClass from './utils/objectClass';
-
 // constants
-import {
-  FUNCTION
-} from './constants/objectClass';
+import {FUNCTION} from './_internals/objectClass';
+
+// utils
+import {getObjectClass} from './_internals/utils';
 
 /**
  * convert object to function by wrapping the object
@@ -13,14 +11,11 @@ import {
  * @param {any} object
  * @returns {function}
  */
-const toFunction = (object) => {
-  if (getObjectClass(object) === FUNCTION) {
-    return object;
-  }
-
-  return function() {
-    return object;
-  };
-};
+const toFunction = (object) =>
+  getObjectClass(object) === FUNCTION
+    ? object
+    : function() {
+      return object;
+    };
 
 export default toFunction;

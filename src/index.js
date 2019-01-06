@@ -15,102 +15,97 @@ import toString from './toString';
 import toSymbol from './toSymbol';
 import toUndefined from './toUndefined';
 
-const TRANSFORMABLE_TYPES = {
-  ARRAY: 'array',
-  BOOLEAN: 'boolean',
-  DATE: 'date',
-  ERROR: 'error',
-  FUNCTION: 'function',
-  GENERATOR: 'generator',
-  MAP: 'map',
-  NULL: 'null',
-  NUMBER: 'number',
-  OBJECT: 'object',
-  PROMISE: 'promise',
-  REGEXP: 'regexp',
-  SET: 'set',
-  STRING: 'string',
-  SYMBOL: 'symbol',
-  UNDEFINED: 'undefined'
-};
-
 const convertify = (type, object) => {
   const normalizedType = type.toLowerCase();
 
   switch (normalizedType) {
-    case TRANSFORMABLE_TYPES.ARRAY:
+    case 'array':
       return toArray(object);
 
-    case TRANSFORMABLE_TYPES.BOOLEAN:
+    case 'boolean':
       return toBoolean(object);
 
-    case TRANSFORMABLE_TYPES.DATE:
+    case 'date':
       return toDate(object);
 
-    case TRANSFORMABLE_TYPES.ERROR:
+    case 'error':
       return toError(object);
 
-    case TRANSFORMABLE_TYPES.FUNCTION:
+    case 'function':
       return toFunction(object);
 
-    case TRANSFORMABLE_TYPES.GENERATOR:
+    case 'generator':
       return toGenerator(object);
 
-    case TRANSFORMABLE_TYPES.MAP:
+    case 'map':
       return toMap(object);
 
-    case TRANSFORMABLE_TYPES.NULL:
+    case 'null':
       return toNull(object);
 
-    case TRANSFORMABLE_TYPES.NUMBER:
+    case 'number':
       return toNumber(object);
 
-    case TRANSFORMABLE_TYPES.OBJECT:
+    case 'object':
       return toObject(object);
 
-    case TRANSFORMABLE_TYPES.PROMISE:
+    case 'promise':
       return toPromise(object);
 
-    case TRANSFORMABLE_TYPES.REGEXP:
+    case 'regexp':
       return toRegExp(object);
 
-    case TRANSFORMABLE_TYPES.SET:
+    case 'set':
       return toSet(object);
 
-    case TRANSFORMABLE_TYPES.STRING:
+    case 'string':
       return toString(object);
 
-    case TRANSFORMABLE_TYPES.SYMBOL:
+    case 'symbol':
       return toSymbol(object);
 
-    case TRANSFORMABLE_TYPES.UNDEFINED:
+    case 'undefined':
       return toUndefined(object);
+
+    default:
+      throw new TypeError('This type of conversion is not currently supported.');
   }
 };
 
-for (let key in TRANSFORMABLE_TYPES) {
-  const value = TRANSFORMABLE_TYPES[key];
+convertify.array = toArray;
+convertify.boolean = toBoolean;
+convertify.date = toDate;
+convertify.error = toError;
+convertify.function = toFunction;
+convertify.generator = toGenerator;
+convertify.map = toMap;
+convertify.null = toNull;
+convertify.number = toNumber;
+convertify.object = toObject;
+convertify.promise = toPromise;
+convertify.regexp = toRegExp;
+convertify.set = toSet;
+convertify.string = toString;
+convertify.symbol = toSymbol;
+convertify.undefined = toUndefined;
 
-  convertify[value] = (object) => {
-    return convertify(value, object);
-  };
-}
-
-export {toArray};
-export {toBoolean};
-export {toDate};
-export {toError};
-export {toFunction};
-export {toGenerator};
-export {toMap};
-export {toNull};
-export {toNumber};
-export {toObject};
-export {toPromise};
-export {toRegExp};
-export {toSet};
-export {toString};
-export {toSymbol};
-export {toUndefined};
+export {
+  toArray,
+  toBoolean,
+  toDate,
+  toError,
+  toFunction,
+  toGenerator,
+  toMap,
+  toNull,
+  toNumber,
+  toObject,
+  toPromise,
+  toRegExp,
+  toSet,
+  toString,
+  toSymbol,
+  toUndefined,
+};
 
 export default convertify;

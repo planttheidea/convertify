@@ -1,17 +1,18 @@
-// utils
-import {
-  forEach,
-  isEncapsulatedBy
-} from './utils/miscellaneous';
-import getObjectClass from './utils/objectClass';
-
+// constants
 import {
   ARRAY,
   OBJECT,
   MAP,
   SET,
-  STRING
-} from './constants/objectClass';
+  STRING,
+} from './_internals/objectClass';
+
+// utils
+import {
+  getObjectClass,
+  isEncapsulatedBy,
+  parse,
+} from './_internals/utils';
 
 /**
  * convert object to an array, with different
@@ -27,40 +28,29 @@ const toArray = (object) => {
     return object;
   }
 
-  let newArray = [];
+  if (objectClass === OBJECT) {
+    const array = [];
 
-  switch (objectClass) {
-    case OBJECT:
-      const keys = Object.keys(object);
+    for (let key in object) {
+      array.push(object[key]);
+    }
 
-      forEach(keys, (key) => {
-        newArray.push(object[key]);
-      });
-
-      return newArray;
-
-    case MAP:
-    case SET:
-      object.forEach((value) => {
-        newArray.push(value);
-      });
-
-      return newArray;
-
-    case STRING:
-      if (isEncapsulatedBy(object, '[', ']')) {
-        try {
-          return JSON.parse(object);
-        } catch (exception) {
-          return [object];
-        }
-      }
-
-      return [object];
-
-    default:
-      return [object];
+    return array;
   }
+
+  if (objectClass === MAP || objectClass === SET) {
+    const array = [];
+
+    object.forEach((value) => array.push(value));
+
+    return array;
+  }
+
+  if (objectClass === STRING) {
+    return isEncapsulatedBy(object, '[', ']') ? parse(object, () => [object]) : [object];
+  }
+
+  return [object];
 };
 
 export default toArray;

@@ -1,13 +1,11 @@
+// constants
+import {PROMISE} from './_internals/objectClass';
+
 // utils
 import {
-  throwUnsupportedError
-} from './utils/miscellaneous';
-import getObjectClass from './utils/objectClass';
-
-// constants
-import {
-  PROMISE
-} from './constants/objectClass';
+  getObjectClass,
+  throwUnsupportedError,
+} from './_internals/utils';
 
 /**
  * convert object to promise by wrapping it in
@@ -21,11 +19,7 @@ const toPromise = (object) => {
     throwUnsupportedError('Promise');
   }
 
-  if (getObjectClass(object) === PROMISE) {
-    return object;
-  }
-
-  return Promise.resolve(object);
+  return getObjectClass(object) === PROMISE ? object : Promise.resolve(object);
 };
 
 export default toPromise;

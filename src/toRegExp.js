@@ -1,17 +1,17 @@
+// constants
+import {
+  REGEXP,
+  STRING,
+} from './_internals/objectClass';
+
 // transform
 import toString from './toString';
 
 // utils
 import {
-  isEncapsulatedBy
-} from './utils/miscellaneous';
-import getObjectClass from './utils/objectClass';
-
-// constants
-import {
-  REGEXP,
-  STRING
-} from './constants/objectClass';
+  getObjectClass,
+  isEncapsulatedBy,
+} from './_internals/utils';
 
 /**
  * convert object to regexp with different mappings

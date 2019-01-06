@@ -1,14 +1,14 @@
 // transform
 import toString from './toString';
 
-// utils
-import getObjectClass from './utils/objectClass';
-
 // constants
 import {
   ERROR,
-  STRING
-} from './constants/objectClass';
+  STRING,
+} from './_internals/objectClass';
+
+// utils
+import {getObjectClass} from './_internals/utils';
 
 /**
  * convert object to error with the stringified
@@ -20,7 +20,7 @@ import {
 const toError = (object) => {
   const objectClass = getObjectClass(object);
 
-  if (getObjectClass(object) === ERROR) {
+  if (objectClass === ERROR) {
     return object;
   }
 

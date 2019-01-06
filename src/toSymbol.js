@@ -1,17 +1,17 @@
+// constants
+import {
+  STRING,
+  SYMBOL,
+} from './_internals/objectClass';
+
 // transform
 import toString from './toString';
 
 // utils
 import {
-  throwUnsupportedError
-} from './utils/miscellaneous';
-import getObjectClass from './utils/objectClass';
-
-// constants
-import {
-  STRING,
-  SYMBOL
-} from './constants/objectClass';
+  getObjectClass,
+  throwUnsupportedError,
+} from './_internals/utils';
 
 /**
  * convert object to symbol by creating a new symbol
