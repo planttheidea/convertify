@@ -126,7 +126,7 @@ const getValueForStringification = (object) => {
  * create the replacer function leveraging closure for
  * recursive stack storage
  */
-const replacer = ((stack, undefined, recursiveCounter, index) => (key, value) => {
+export const replacer = ((stack, undefined, recursiveCounter, index) => (key, value) => {
   if (key === '') {
     stack = [value];
     recursiveCounter = 0;

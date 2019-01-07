@@ -23,21 +23,36 @@ import {
   SET,
   STRING,
   SYMBOL,
-  UNDEFINED
+  UNDEFINED,
 } from './helpers/dummyData';
 
 const testIsDateMostlyEqual = (date1, date2) => {
-  const date1String = date1.toISOString().split(':').slice(0, -1).join(':');
-  const date2String = date2.toISOString().split(':').slice(0, -1).join(':');
+  const date1String = date1
+    .toISOString()
+    .split(':')
+    .slice(0, -1)
+    .join(':');
+  const date2String = date2
+    .toISOString()
+    .split(':')
+    .slice(0, -1)
+    .join(':');
 
   return date1String === date2String;
 };
 
 const VALID_DATE_ARRAY = [2000, 0, 1];
-const VALID_DATE_MAP = new Map().set('day', 1).set('month', 0).set('year', 2000);
-const VALID_DATE_OBJECT = {day: 1, month: 0, year: 2000};
+const VALID_DATE_MAP = new Map()
+  .set('day', 1)
+  .set('month', 0)
+  .set('year', 2000);
+const VALID_DATE_OBJECT = {
+  day: 1,
+  month: 0,
+  year: 2000,
+};
 const VALID_DATE_SET = new Set([2000, 0, 1]);
-const VALID_DATE_RESULT = new Date("2000-01-01T05:00:00.000Z");
+const VALID_DATE_RESULT = new Date(2000, 0, 1);
 
 test('if passing a date returns the same object', (t) => {
   t.is(toDate(DATE), DATE);
@@ -69,7 +84,7 @@ test('if passing values mapped to new dates yield new dates', (t) => {
 });
 
 test('if passing standard date input values yield the correct date', (t) => {
-  t.deepEqual(toDate(NUMBER), new Date("1970-01-01T00:00:00.123Z"));
+  t.deepEqual(toDate(NUMBER), new Date('1970-01-01T00:00:00.123Z'));
   t.deepEqual(toDate(VALID_DATE_ARRAY), VALID_DATE_RESULT);
   t.deepEqual(toDate(VALID_DATE_MAP), VALID_DATE_RESULT);
   t.deepEqual(toDate(VALID_DATE_OBJECT), VALID_DATE_RESULT);

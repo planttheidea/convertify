@@ -9,6 +9,7 @@ import {
   BOOLEAN,
   DATE,
   MAP,
+  NULL,
   NUMBER,
   OBJECT,
   SET,
@@ -60,7 +61,7 @@ const getType = (numberString) => {
  */
 const splitAndValidate = (string) =>
   string.split(' ').map((value) => {
-    if (value === null) {
+    if (getObjectClass(value) === NULL) {
       throw new Error(`${value} is not a valid number.`);
     }
 
@@ -151,23 +152,16 @@ const groupTokens = (array) => {
  * @param {array<array>} array
  * @returns {number}
  */
-const reduceArray = (array) => {
-  let next;
-
-  return array.reduce((sum, current, index) => {
-    next = array[index + 1];
-
-    if (next === 100) {
-      return (sum += current * 100);
-    }
-
-    if (current !== 100) {
-      return (sum += current);
+const reduceArray = (array) =>
+  array.reduce((sum, current, index) => {
+    if (array[index + 1] === 100) {
+      sum += current * 100;
+    } else if (current !== 100) {
+      sum += current;
     }
 
     return sum;
   }, 0);
-};
 
 /**
  * based on groups, calculate the total value
@@ -176,19 +170,19 @@ const reduceArray = (array) => {
  * @returns {number}
  */
 const calculateValue = (groups) => {
-  const length = groups.length;
+  const maxIndex = groups.length - 1;
 
   let currentStack = 0;
 
   return groups.reduce((sum, group, index) => {
-    if (getType(group[0] === 'power')) {
+    if (getType(group[0]) === 'power') {
       sum += currentStack * VALUES[group[0]];
 
       currentStack = 0;
     } else {
       currentStack += reduceArray(group.map((item) => VALUES[item]));
 
-      if (index === length - 1) {
+      if (index === maxIndex) {
         sum += currentStack;
       }
     }
@@ -268,9 +262,8 @@ const toNumber = (object) => {
   const sanitizedString = sanitize(string);
   const splitString = splitAndValidate(sanitizedString);
   const groups = groupTokens(splitString);
-  const value = calculateValue(groups);
 
-  return typeof value === 'number' ? value : NaN;
+  return calculateValue(groups) || NaN;
 };
 
 export default toNumber;

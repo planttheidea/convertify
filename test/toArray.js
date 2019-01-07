@@ -23,7 +23,7 @@ import {
   SET,
   STRING,
   SYMBOL,
-  UNDEFINED
+  UNDEFINED,
 } from './helpers/dummyData';
 
 test('if passing an array returns the same object', (t) => {

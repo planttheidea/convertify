@@ -31,7 +31,11 @@ const toSet = (object) => {
   }
 
   if (objectClass === ARRAY) {
-    return object.reduce((set, value) => set.add(value), new Set());
+    return object.reduce((set, value) => {
+      set.add(value);
+
+      return set;
+    }, new Set());
   }
 
   if (objectClass === MAP) {
@@ -58,7 +62,7 @@ const toSet = (object) => {
 
   const set = new Set();
 
-  set.add([object]);
+  set.add(object);
 
   return set;
 };
