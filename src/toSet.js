@@ -1,16 +1,16 @@
-// utils
-import {
-  throwUnsupportedError
-} from './utils/miscellaneous';
-import getObjectClass from './utils/objectClass';
-
 // constants
 import {
   ARRAY,
   MAP,
   SET,
-  OBJECT
-} from './constants/objectClass';
+  OBJECT,
+} from './_internals/objectClass';
+
+// utils
+import {
+  getObjectClass,
+  throwUnsupportedError,
+} from './_internals/utils';
 
 /**
  * convert object to set with different mappings
@@ -30,33 +30,41 @@ const toSet = (object) => {
     return object;
   }
 
-  let values = [];
+  if (objectClass === ARRAY) {
+    return object.reduce((set, value) => {
+      set.add(value);
 
-  switch (objectClass) {
-    case ARRAY:
-      return new Set(object);
-
-    case MAP:
-      if (typeof Map === 'undefined') {
-        throwUnsupportedError('Map');
-      }
-
-      object.forEach((value) => {
-        values.push(value);
-      });
-
-      return new Set(values);
-
-    case OBJECT:
-      for (let key in object) {
-        values.push(object[key]);
-      }
-
-      return new Set(values);
-
-    default:
-      return new Set([object]);
+      return set;
+    }, new Set());
   }
+
+  if (objectClass === MAP) {
+    if (typeof Map === 'undefined') {
+      throwUnsupportedError('Map');
+    }
+
+    const set = new Set();
+
+    object.forEach((value) => set.add(value));
+
+    return set;
+  }
+
+  if (objectClass === OBJECT) {
+    const set = new Set();
+
+    for (let key in object) {
+      set.add(object[key]);
+    }
+
+    return set;
+  }
+
+  const set = new Set();
+
+  set.add(object);
+
+  return set;
 };
 
 export default toSet;

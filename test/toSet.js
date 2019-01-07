@@ -21,13 +21,15 @@ const STRINGS_TO_NOT_TEST_AUTOMATEDLY = [
   'EMPTY_SET',
   'MAP',
   'OBJECT',
-  'SET'
+  'SET',
 ];
 
 test('if passing simply-mapped values yield the original object wrapped in an array', (t) => {
-  for (let key in dummyData) {
+  const resultData = Object.assign({}, dummyData);
+
+  for (let key in resultData) {
     if (!~STRINGS_TO_NOT_TEST_AUTOMATEDLY.indexOf(key)) {
-      testIfSetIsEqual(t, toSet(dummyData[key]), new Set([dummyData[key]]));
+      testIfSetIsEqual(t, toSet(resultData[key]), new Set([resultData[key]]));
     }
   }
 });

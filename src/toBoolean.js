@@ -1,14 +1,16 @@
-// utils
-import getObjectClass from './utils/objectClass';
-
 // constants
 import {
   ARRAY,
   BOOLEAN,
   MAP,
   OBJECT,
-  SET
-} from './constants/objectClass';
+  SET,
+} from './_internals/objectClass';
+
+// utils
+import {getObjectClass} from './_internals/utils';
+
+const {keys} = Object;
 
 /**
  * convert object to boolean with different mappings
@@ -18,23 +20,25 @@ import {
  * @returns {boolean}
  */
 const toBoolean = (object) => {
-  switch (getObjectClass(object)) {
-    case BOOLEAN:
-      return object;
+  const objectClass = getObjectClass(object);
 
-    case ARRAY:
-      return !!object.length;
-
-    case OBJECT:
-      return !!Object.keys(object).length;
-
-    case MAP:
-    case SET:
-      return !!object.size;
-
-    default:
-      return !!object;
+  if (objectClass === BOOLEAN) {
+    return object;
   }
+
+  if (objectClass === ARRAY) {
+    return !!object.length;
+  }
+
+  if (objectClass === OBJECT) {
+    return !!keys(object).length;
+  }
+
+  if (objectClass === MAP || objectClass === SET) {
+    return !!object.size;
+  }
+
+  return !!object;
 };
 
 export default toBoolean;

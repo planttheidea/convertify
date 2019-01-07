@@ -1,11 +1,8 @@
-
 /**
  * return null (noop)
  *
  * @returns {null}
  */
-const toNull = () => {
-  return null;
-};
+const toNull = () => null;
 
 export default toNull;

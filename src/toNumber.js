@@ -1,15 +1,9 @@
-// utils
-import {
-  forEach
-} from './utils/miscellaneous';
-import getObjectClass from './utils/objectClass';
-
 // constants
 import {
   STOP_POINTS,
   TOKENS,
-  VALUES
-} from './constants/numbers';
+  VALUES,
+} from './_internals/numbers';
 import {
   ARRAY,
   BOOLEAN,
@@ -20,8 +14,12 @@ import {
   OBJECT,
   SET,
   STRING,
-  UNDEFINED
-} from './constants/objectClass';
+} from './_internals/objectClass';
+
+// utils
+import {getObjectClass} from './_internals/utils';
+
+const {keys} = Object;
 
 /**
  * remove extraneous portions of the string and eliminate plurals
@@ -29,15 +27,13 @@ import {
  * @param {string} string
  * @returns {string}
  */
-const sanitize = (string) => {
-  return string.toLowerCase()
-    .replace(/ and /g, '\ ')
+const sanitize = (string) =>
+  string
+    .toLowerCase()
+    .replace(/ and /g, ' ')
     .replace(/ +(?= )/g, '')
     .replace(/-/g, '')
-    .replace(/(hundreds|thousands|millions|billions|trillions)/g, (match) => {
-      return match.slice(0, -1);
-    });
-};
+    .replace(/(hundreds|thousands|millions|billions|trillions)/g, (match) => match.slice(0, -1));
 
 /**
  * get the type (unit, power, special, etc) for the
@@ -48,7 +44,7 @@ const sanitize = (string) => {
  */
 const getType = (numberString) => {
   for (let key in TOKENS) {
-    if (!!~TOKENS[key].indexOf(numberString)) {
+    if (~TOKENS[key].indexOf(numberString)) {
       return key;
     }
   }
@@ -59,25 +55,22 @@ const getType = (numberString) => {
 /**
  * split the string and make sure each part
  * is a valid value
- * 
+ *
  * @param {string} string
  * @returns {array<string>}
  */
-const splitAndValidate = (string) => {
-  const array = string.split(' ');
-
-  forEach(array, (value) => {
+const splitAndValidate = (string) =>
+  string.split(' ').map((value) => {
     if (getObjectClass(value) === NULL) {
       throw new Error(`${value} is not a valid number.`);
     }
-  });
 
-  return array;
-};
+    return value;
+  });
 
 /**
  * is the leftArray equal to the right array in value
- * 
+ *
  * @param {array<string>} leftArray
  * @param {array<string>} rightArray
  * @returns {boolean}
@@ -85,7 +78,7 @@ const splitAndValidate = (string) => {
 const isSameArray = (leftArray, rightArray) => {
   const leftLength = leftArray.length;
 
-  if (!(getObjectClass(leftArray) === ARRAY && getObjectClass(rightArray) === ARRAY && leftLength === rightArray.length)) {
+  if (getObjectClass(leftArray) !== ARRAY || getObjectClass(rightArray) !== ARRAY || leftLength !== rightArray.length) {
     return false;
   }
 
@@ -102,7 +95,7 @@ const isSameArray = (leftArray, rightArray) => {
 
 /**
  * determine if array contents are considered a stopping point
- * 
+ *
  * @param {array<string>} array
  * @returns {boolean}
  */
@@ -123,7 +116,7 @@ const isStopPoint = (array) => {
 /**
  * group the array of values based on their type
  * (units, powers, etc)
- * 
+ *
  * @param {array<string>} array
  * @returns {array<array>}
  */
@@ -131,7 +124,9 @@ const groupTokens = (array) => {
   let arrayClone = [...array],
       tempArray = [],
       groups = [],
-      typeArray, currentToken, currentType;
+      typeArray,
+      currentToken,
+      currentType;
 
   while (arrayClone.length) {
     currentToken = arrayClone.pop();
@@ -139,9 +134,7 @@ const groupTokens = (array) => {
 
     tempArray.unshift(currentToken);
 
-    typeArray = tempArray.map((item) => {
-      return getType(item);
-    });
+    typeArray = tempArray.map((item) => getType(item));
 
     if (currentType === 'power' || isStopPoint(typeArray)) {
       groups.unshift(tempArray);
@@ -155,65 +148,53 @@ const groupTokens = (array) => {
 
 /**
  * calculate sum based on array
- * 
+ *
  * @param {array<array>} array
  * @returns {number}
  */
-const reduceArray = (array) => {
-  let sum = 0,
-      next;
-
-  forEach(array, (current, index) => {
-    next = array[index + 1];
-
-    if (next === 100) {
+const reduceArray = (array) =>
+  array.reduce((sum, current, index) => {
+    if (array[index + 1] === 100) {
       sum += current * 100;
     } else if (current !== 100) {
       sum += current;
     }
-  });
 
-  return sum;
-};
+    return sum;
+  }, 0);
 
 /**
  * based on groups, calculate the total value
- * 
+ *
  * @param {array<array>} groups
  * @returns {number}
  */
 const calculateValue = (groups) => {
-  const length = groups.length;
+  const maxIndex = groups.length - 1;
 
-  let currentStack = 0,
-      sum = 0,
-      valueArray;
+  let currentStack = 0;
 
-  forEach(groups, (group, index) => {
+  return groups.reduce((sum, group, index) => {
     if (getType(group[0]) === 'power') {
       sum += currentStack * VALUES[group[0]];
 
       currentStack = 0;
     } else {
-      valueArray = group.map((item) => {
-        return VALUES[item];
-      });
+      currentStack += reduceArray(group.map((item) => VALUES[item]));
 
-      currentStack += reduceArray(valueArray);
-
-      if (index === length - 1) {
+      if (index === maxIndex) {
         sum += currentStack;
       }
     }
-  });
 
-  return sum;
+    return sum;
+  }, 0);
 };
 
 /**
  * convert object to number with different mappings
  * based on object type
- * 
+ *
  * if object is a string, try to convert it via parseFloat
  * or words-to-number
  *
@@ -221,38 +202,39 @@ const calculateValue = (groups) => {
  * @returns {number}
  */
 const toNumber = (object) => {
+  // eslint-disable-next-line eqeqeq
+  if (object == null) {
+    return 0;
+  }
+
   const objectClass = getObjectClass(object);
 
-  switch (objectClass) {
-    case NUMBER:
-      return object;
+  if (objectClass === NUMBER) {
+    return object;
+  }
 
-    case BOOLEAN:
-      return object === true ? 1 : 0;
+  if (objectClass === BOOLEAN) {
+    return object === true ? 1 : 0;
+  }
 
-    case DATE:
-      return object.valueOf();
+  if (objectClass === DATE) {
+    return object.getTime();
+  }
 
-    case NULL:
-    case UNDEFINED:
-      return 0;
+  if (objectClass === ARRAY) {
+    return object.length;
+  }
 
-    case ARRAY:
-      return object.length;
+  if (objectClass === OBJECT) {
+    return keys(object).length;
+  }
 
-    case OBJECT:
-      return Object.keys(object).length;
+  if (objectClass === MAP || objectClass === SET) {
+    return object.size;
+  }
 
-    case MAP:
-    case SET:
-      return object.size;
-
-    default:
-      if (objectClass !== STRING) {
-        return NaN;
-      } else {
-        break;
-      }
+  if (objectClass !== STRING) {
+    return NaN;
   }
 
   if (object === 'true' || object === 'false') {
@@ -273,7 +255,7 @@ const toNumber = (object) => {
 
   const valueAsIs = VALUES[string];
 
-  if (getObjectClass(valueAsIs) !== UNDEFINED) {
+  if (valueAsIs !== void 0) {
     return valueAsIs;
   }
 
@@ -282,7 +264,6 @@ const toNumber = (object) => {
   const groups = groupTokens(splitString);
 
   return calculateValue(groups) || NaN;
-
 };
 
 export default toNumber;

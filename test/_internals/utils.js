@@ -1,8 +1,12 @@
 import test from 'ava';
 
-import types from '../../src/constants/objectClass';
+import types from '../../src/_internals/objectClass';
 
-import getObjectClass from '../../src/utils/objectClass';
+import {
+  getObjectClass,
+  isEncapsulatedBy,
+  throwUnsupportedError,
+} from '../../src/_internals/utils';
 
 const ARRAY = [1, 2, 3];
 const OBJECTS = {
@@ -13,28 +17,28 @@ const OBJECTS = {
   error: new Error('Test'),
   float32Array: new Float32Array(ARRAY),
   float64Array: new Float64Array(ARRAY),
-  'function': () => {},
-  generator: function* () {},
+  function: () => {},
+  * generator() {},
   int8Array: new Int8Array(ARRAY),
   int16Array: new Int16Array(ARRAY),
   int32Array: new Int32Array(ARRAY),
   map: new Map().set('foo', 'bar'),
   math: Math,
-  'null': null,
+  null: null,
   number: 2,
   object: {foo: 'bar'},
   promise: Promise.resolve(1),
   regexp: /foo/,
-  'set': new Set().add('foo'),
+  set: new Set().add('foo'),
   string: 'string',
   symbol: Symbol('foo'),
   uint8Array: new Uint8Array(ARRAY),
   uint8ClampedArray: new Uint8ClampedArray(ARRAY),
   uint16Array: new Uint16Array(ARRAY),
   uint32Array: new Uint32Array(ARRAY),
-  'undefined': undefined,
+  undefined,
   weakMap: new WeakMap().set({}, 'bar'),
-  weakSet: new WeakSet().add({foo:'bar'})
+  weakSet: new WeakSet().add({foo: 'bar'}),
 };
 
 test('if types are correct string values', (t) => {
@@ -100,4 +104,20 @@ test('if getObjectClass correctly identifies to object class values', (t) => {
   t.is(getObjectClass(OBJECTS.undefined), types.UNDEFINED);
   t.is(getObjectClass(OBJECTS.weakMap), types.WEAKMAP);
   t.is(getObjectClass(OBJECTS.weakSet), types.WEAKSET);
+});
+
+test('isEncapsulatedBy tests if string is encapsulated by the correct values', (t) => {
+  const sameBeginAndEnd = '|foo|';
+  const differentBeginAndEnd = '[foo]';
+  const notEncapsulated = 'foo';
+
+  t.true(isEncapsulatedBy(sameBeginAndEnd, '|'));
+  t.true(isEncapsulatedBy(differentBeginAndEnd, '[', ']'));
+  t.false(isEncapsulatedBy(notEncapsulated, '|'));
+});
+
+test('if UnsupportedError throws with the correct message', (t) => {
+  t.throws(() => {
+    throwUnsupportedError('Map');
+  });
 });

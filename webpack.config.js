@@ -2,69 +2,41 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    cache: true,
+  devtool: '#source-map',
 
-    debug: true,
+  entry: [path.resolve(__dirname, 'src', 'index.js')],
 
-    devtool: 'source-map',
+  mode: 'development',
 
-    entry: [
-        path.resolve (__dirname, 'src', 'index.js')
+  module: {
+    rules: [
+      {
+        enforce: 'pre',
+        include: [path.resolve(__dirname, 'src')],
+        loader: 'eslint-loader',
+        options: {
+          configFile: '.eslintrc',
+          failOnError: true,
+          failOnWarning: false,
+          formatter: require('eslint-friendly-formatter'),
+        },
+        test: /\.js$/,
+      },
+      {
+        include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'DEV_ONLY')],
+        loader: 'babel-loader',
+        test: /\.js$/,
+      },
     ],
+  },
 
-    eslint: {
-        configFile: '.eslintrc',
-        emitError: true,
-        failOnError: true,
-        failOnWarning: false,
-        formatter: require('eslint-friendly-formatter')
-    },
+  output: {
+    filename: 'convertify.js',
+    library: 'convertify',
+    libraryTarget: 'umd',
+    path: path.resolve(__dirname, 'dist'),
+    umdNamedDefine: true,
+  },
 
-    module: {
-        preLoaders: [
-            {
-                include: [
-                    path.resolve(__dirname, 'src')
-                ],
-                loader: 'eslint-loader',
-                test: /\.js$/
-            }
-        ],
-
-        loaders: [
-            {
-                include: [
-                    path.resolve(__dirname, 'src')
-                ],
-                loader: 'babel',
-                test: /\.js$/
-            }
-        ]
-    },
-
-    output: {
-        filename: 'convertify.js',
-        library: 'convertify',
-        path: path.resolve(__dirname, 'dist'),
-        umdNamedDefine: true
-    },
-
-    plugins: [
-        new webpack.EnvironmentPlugin([
-            'NODE_ENV'
-        ])
-    ],
-
-    resolve: {
-        extensions: [
-            '',
-            '.js'
-        ],
-
-        fallback: [
-            path.join (__dirname, 'src')
-        ],
-
-        root: __dirname
-    }
+  plugins: [new webpack.EnvironmentPlugin(['NODE_ENV'])],
 };
