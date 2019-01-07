@@ -12,9 +12,7 @@ coverage
 DEV_ONLY
 node_modules
 src
+test
 webpack
-jest.config.js
-tsconfig.json
-tslint.json
 *.log
 yarn.lock
