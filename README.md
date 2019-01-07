@@ -85,7 +85,7 @@ const stringifiedObject = to("string", object);
 const alsoStringifiedObject = to.string(object);
 ```
 
-The conversions themselves try to be smarter than the standard implicit conversions, so check out the API to learn more details about specific conversion results.
+The conversions themselves try to be smarter than the standard implicit conversions, so check out the [API](API.md) to learn more details about specific conversion results.
 
 ### Development
 

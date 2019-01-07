@@ -15,79 +15,39 @@ import toString from './toString';
 import toSymbol from './toSymbol';
 import toUndefined from './toUndefined';
 
-const convertify = (type, object) => {
-  const normalizedType = type.toLowerCase();
-
-  switch (normalizedType) {
-    case 'array':
-      return toArray(object);
-
-    case 'boolean':
-      return toBoolean(object);
-
-    case 'date':
-      return toDate(object);
-
-    case 'error':
-      return toError(object);
-
-    case 'function':
-      return toFunction(object);
-
-    case 'generator':
-      return toGenerator(object);
-
-    case 'map':
-      return toMap(object);
-
-    case 'null':
-      return toNull(object);
-
-    case 'number':
-      return toNumber(object);
-
-    case 'object':
-      return toObject(object);
-
-    case 'promise':
-      return toPromise(object);
-
-    case 'regexp':
-      return toRegExp(object);
-
-    case 'set':
-      return toSet(object);
-
-    case 'string':
-      return toString(object);
-
-    case 'symbol':
-      return toSymbol(object);
-
-    case 'undefined':
-      return toUndefined(object);
-
-    default:
-      throw new TypeError('This type of conversion is not currently supported.');
-  }
+const CONVERTIFY_MAP = {
+  array: toArray,
+  boolean: toBoolean,
+  date: toDate,
+  error: toError,
+  function: toFunction,
+  generator: toGenerator,
+  map: toMap,
+  null: toNull,
+  number: toNumber,
+  object: toObject,
+  promise: toPromise,
+  regexp: toRegExp,
+  set: toSet,
+  string: toString,
+  symbol: toSymbol,
+  undefined: toUndefined,
 };
 
-convertify.array = toArray;
-convertify.boolean = toBoolean;
-convertify.date = toDate;
-convertify.error = toError;
-convertify.function = toFunction;
-convertify.generator = toGenerator;
-convertify.map = toMap;
-convertify.null = toNull;
-convertify.number = toNumber;
-convertify.object = toObject;
-convertify.promise = toPromise;
-convertify.regexp = toRegExp;
-convertify.set = toSet;
-convertify.string = toString;
-convertify.symbol = toSymbol;
-convertify.undefined = toUndefined;
+const convertify = (type, object) => {
+  const normalizedType = typeof type === 'string' ? type.toLowerCase() : '';
+  const handler = CONVERTIFY_MAP[normalizedType];
+
+  if (handler) {
+    return handler(object);
+  }
+
+  throw new TypeError('This type of conversion is not currently supported.');
+};
+
+for (let key in CONVERTIFY_MAP) {
+  convertify[key] = CONVERTIFY_MAP[key];
+}
 
 export {
   toArray,

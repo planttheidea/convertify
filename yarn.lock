@@ -2472,11 +2472,6 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-curriable@^1.1.0:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/curriable/-/curriable-1.2.4.tgz#0bbdd0fea2679f195c8f83a33e1a5904ce2b5978"
-  integrity sha512-ztdZozdCEpuzsTW0ruWqhO3TEOjsj3KG3wTiotd2joU7+3XJY/1NqrsDJr2gdnLGM8g3ZLIwenG34EWp9Jrt2A==
-
 cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
@@ -3948,15 +3943,6 @@ hash-base@^3.0.0:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-hash-it@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/hash-it/-/hash-it-4.0.4.tgz#43f47227128fa05f446a6748fe192a6a347f2974"
-  integrity sha512-LC8xgrdjR3iW2hs7Vb18FFDIyv+hZHFAwJM11SKLwwI4LdoniT+ZmrHk7b6vYjoo7KPFPcGZ/8u2XybBWzWtsw==
-  dependencies:
-    curriable "^1.1.0"
-    fast-stringify "^1.1.1"
-    json-prune "^1.1.0"
-
 hash.js@^1.0.0, hash.js@^1.0.3:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.7.tgz#0babca538e8d4ee4a0f8988d68866537a003cf42"
@@ -4828,11 +4814,6 @@ json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
   integrity sha512-mrqyZKfX5EhL7hvqcV6WG1yYjnjeuYDzDhhcAAUrq8Po85NBQBJP+ZDUT75qZQ98IkUoBqdkExkukOU7Ts2wrw==
-
-json-prune@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/json-prune/-/json-prune-1.1.0.tgz#23e2fad108932b255050e3f1a70500c2b4aa30c7"
-  integrity sha1-I+L60QiTKyVQUOPxpwUAwrSqMMc=
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"
