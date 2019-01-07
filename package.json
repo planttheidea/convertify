@@ -77,7 +77,7 @@
     "transpile:es": "BABEL_ENV=es babel src --out-dir es",
     "transpile:lib": "BABEL_ENV=lib babel src --out-dir lib"
   },
-  "version": "1.0.3",
+  "version": "1.0.4",
   "dependencies": {
     "fast-stringify": "^1.1.1",
     "hash-it": "^4.0.4"
